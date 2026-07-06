@@ -1,4 +1,4 @@
-name: CI
+name: CI/CD
 
 on:
   push:
@@ -20,3 +20,19 @@ jobs:
 
       - name: Run abc.py
         run: python abc.py
+
+  deploy:
+    needs: run-script
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Simulate deployment
+        run: |
+          echo "Deploying abc.py..."
+          echo "Copying files to production server..."
+          mkdir -p deployed
+          cp abc.py deployed/
+          echo "Deployment complete!"
